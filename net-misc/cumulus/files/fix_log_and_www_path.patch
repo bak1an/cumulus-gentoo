@@ -1,0 +1,35 @@
+diff --git a/CumulusServer/sources/Server.cpp b/CumulusServer/sources/Server.cpp
+index c21ff95..096a649 100644
+--- a/CumulusServer/sources/Server.cpp
++++ b/CumulusServer/sources/Server.cpp
+@@ -36,8 +36,8 @@ const string Server::WWWPath;
+ 
+ Server::Server(ApplicationKiller& applicationKiller,const Util::AbstractConfiguration& configurations) : RTMFPServer(configurations.getInt("cores",0)),_pState(Script::CreateState()),_blacklist(configurations.getString("application.dir","./")+"blacklist",*this),_applicationKiller(applicationKiller),_pService(NULL),
+ 	mails(*this,configurations.getString("smtp.host","localhost"),configurations.getInt("smtp.port",SMTPSession::SMTP_PORT),configurations.getInt("smtp.timeout",60)) {
+-	
+-	File((string&)WWWPath = configurations.getString("application.dir","./")+"www").createDirectory();
++        string fallbackWWWDir = "/tmp/cumulus_www";
++	File((string&)WWWPath = configurations.getString("www.directory",fallbackWWWDir)).createDirectory();
+ 	Service::InitGlobalTable(_pState);
+ 	SCRIPT_BEGIN(_pState)
+ 		SCRIPT_CREATE_PERSISTENT_OBJECT(Invoker,LUAInvoker,*this)
+diff --git a/CumulusServer/sources/main.cpp b/CumulusServer/sources/main.cpp
+index 57f2a57..eae6c13 100644
+--- a/CumulusServer/sources/main.cpp
++++ b/CumulusServer/sources/main.cpp
+@@ -60,11 +60,12 @@ private:
+ 
+ 	void initialize(Application& self) {
+ 		ServerApplication::initialize(self);
+-		string dir = config().getString("application.dir","./");
+-		loadConfiguration(dir+config().getString("application.baseName","CumulusServer")+".ini"); // load default configuration files, if present
++		string configDir = "/etc/";
++		string fallbackLogDir = "/tmp/cumulus_logs";
++		loadConfiguration(configDir+config().getString("application.baseName","CumulusServer")+".ini"); // load default configuration files, if present
+ 		_isInteractive = isInteractive();
+ 		// logs
+-		string logDir(config().getString("logs.directory",dir+"logs"));
++		string logDir(config().getString("logs.directory",fallbackLogDir));
+ 		File(logDir).createDirectory();
+ 		_logPath = logDir+"/"+config().getString("logs.name","log")+".";
+ 		_pLogFile = new File(_logPath+"0");

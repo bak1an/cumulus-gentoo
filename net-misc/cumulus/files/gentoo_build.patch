@@ -1,0 +1,41 @@
+diff --git a/CumulusServer/Makefile b/CumulusServer/Makefile
+index 8360635..a8cafaa 100644
+--- a/CumulusServer/Makefile
++++ b/CumulusServer/Makefile
+@@ -7,7 +7,7 @@ LIBDIR=-L/usr/local/lib/ -L./../CumulusLib/
+ SOURCES=./sources/
+ CFLAGS+=-D CUMULUS_LOGS
+ LDFLAGS+="-Wl,-rpath,./../CumulusLib/,-rpath,/usr/local/lib/"
+-LIBS ?= -lCumulus -lPocoFoundation -lPocoXML -lPocoUtil -lPocoNet -lcrypto -lssl -llua5.1
++LIBS ?= -lCumulus -lPocoFoundation -lPocoXML -lPocoUtil -lPocoNet -lcrypto -lssl -llua
+ OBJECT = $(OBJECTS:%=%.o)
+ 
+ main: $(OBJECT)
+diff --git a/CumulusServer/sources/Script.cpp b/CumulusServer/sources/Script.cpp
+index 071c375..4ee482b 100644
+--- a/CumulusServer/sources/Script.cpp
++++ b/CumulusServer/sources/Script.cpp
+@@ -25,7 +25,7 @@
+ #include "Poco/Timezone.h"
+ #include <math.h>
+ extern "C" {
+-	#include "lua5.1/lualib.h"
++	#include "lualib.h"
+ }
+ 
+ using namespace std;
+diff --git a/CumulusServer/sources/Script.h b/CumulusServer/sources/Script.h
+index f842915..5797107 100644
+--- a/CumulusServer/sources/Script.h
++++ b/CumulusServer/sources/Script.h
+@@ -27,8 +27,8 @@
+ 
+ 
+ extern "C" {
+-	#include "lua5.1/lua.h"
+-	#include "lua5.1/lauxlib.h"
++	#include "lua.h"
++	#include "lauxlib.h"
+ }
+ 
+ 
