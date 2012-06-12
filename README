@@ -1,6 +1,6 @@
 ebuild for Cumulus server.
 
-It's a snapshots from https://github.com/OpenRTMFP/Cumulus with some gentoo-related patches.
+It's a snapshot from https://github.com/OpenRTMFP/Cumulus with some gentoo-related patches.
 
 Usage:
 
